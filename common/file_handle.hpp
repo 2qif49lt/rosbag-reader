@@ -81,10 +81,13 @@ struct file_handle
     {
         if (!good())
             return 0;
-        struct stat stat_buf;
+       
 #ifdef _MSC_VER
-		int err = ::fstat(_fileno(file), &stat_buf);
+		struct __stat64 stat_buf;
+		int err = ::_fstat64(_fileno(file), &stat_buf);
+		printf("errno  %d\n", errno);
 #else
+		struct stat stat_buf;
 		int err = ::fstat(fileno(file), &stat_buf);
 #endif
         
